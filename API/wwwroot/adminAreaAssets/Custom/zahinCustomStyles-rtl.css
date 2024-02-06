@@ -1,0 +1,186 @@
+﻿
+/* Start : Font */
+
+@font-face {
+    font-family: sans;
+    src: url('../Fonts/IRANSansWeb(FaNum)_Light.woff');
+}
+@font-face {
+    font-family: kalame;
+    src: url('../Fonts/Kalameh_Black.ttf');
+}
+
+/* End: Font */
+
+html, body{
+    font-family:sans !important;
+}
+
+
+/*#region switch toggle */
+
+
+.zahin-knobs, .zahin-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.zahin-button {
+    position: relative;
+    margin: auto 15px;
+    width: 74px;
+    height: 36px;
+    overflow: hidden;
+}
+
+    .zahin-button.zahin-r, .zahin-button.zahin-r .zahin-layer {
+        border-radius: 100px;
+    }
+
+    .zahin-button.b2 {
+        border-radius: 2px;
+    }
+
+.zahin-checkbox {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.zahin-knobs {
+    z-index: 2;
+}
+
+.zahin-layer {
+    width: 100%;
+    background-color: #fcebeb;
+    transition: 0.3s ease all;
+    z-index: 1;
+}
+
+/* Button 4 */
+#button-4 .zahin-knobs:before, #button-4 .zahin-knobs:after {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+    padding: 9px 4px;
+    background-color: #F44336;
+    border-radius: 50%;
+    transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+
+#button-4 .zahin-knobs:after {
+    top: -28px;
+    right: 4px;
+    left: auto;
+    background-color: #03A9F4;
+}
+
+#button-4 .zahin-checkbox:checked + .zahin-knobs:before {
+    top: -28px;
+}
+
+#button-4 .zahin-checkbox:checked + .zahin-knobs:after {
+    top: 4px;
+}
+
+#button-4 .zahin-checkbox:checked ~ .zahin-layer {
+    background-color: #ebf7fc;
+}
+
+/*#endregion */
+
+
+/*#region Kendo Grid */
+
+.k-grid .k-grid-content, .k-grid .k-grid-content-locked, .k-grid .k-grid-header-locked, .k-grid td {
+    border: none !important;
+    border-width:0 !important;
+}
+.k-grid[dir=rtl] th, .k-rtl .k-grid th {
+    border: none !important;
+    border-width: 0 !important;
+    border-color:transparent;
+    direction:ltr !important;
+    text-align:right !important;
+}
+.k-header > .k-grid-filter, .k-header > .k-header-column-menu{
+    float:left !important;
+}
+.k-grid[dir=rtl] .k-grid-header .k-filterable, .k-grid[dir=rtl] .k-grid-header .k-with-icon, .k-rtl .k-grid .k-grid-header .k-filterable, .k-rtl .k-grid .k-grid-header .k-with-icon {
+    padding-right: calc(1.5em + 0.75rem + 2px + 0.5rem) !important;
+    padding-left: 0.5rem !important;
+}
+.k-grid[dir=rtl] .k-grid-header .k-grid-filter, .k-grid[dir=rtl] .k-grid-header .k-header-column-menu, .k-rtl .k-grid .k-grid-header .k-grid-filter, .k-rtl .k-grid .k-grid-header .k-header-column-menu {
+    left: auto !important;
+    right: 0.5rem !important;
+}
+.k-grid-header th.k-with-icon .k-link{
+    margin-right:-18px !important;
+}
+div.k-grid-footer, div.k-grid-header{
+    padding-left:0 !important;
+    padding-right: 0 !important;
+}
+.k-grid{
+    border-color:white !important;
+    border:none !important;
+}
+.k-toolbar{
+    border-color:white !important;
+    background-color:white !important;
+}
+.k-grid-header {
+    background-color: white !important;
+    padding: 7px 0 !important;
+    border: none !important;
+    border-color: white !important;
+    border-bottom: 1px solid rgb(235, 237, 243) !important;
+}
+.k-master-row:hover {
+    background-color: #f9f9f9 !important;
+}
+th .k-link {
+    font-weight: bold;
+    font-family: sans !important;
+}
+tr td {
+    font-family: sans !important;
+    direction:ltr !important;
+}
+.k-grid-pager{
+    background-color:white !important;
+}
+.k-pager-numbers .k-link.k-state-selected {
+    background-color: #009ef7 !important;
+    border-color: #009ef7 !important;
+}
+.k-rtl .k-pager-first, [dir=rtl] .k-pager-first {
+    border-radius: 0 0.475rem 0.475rem 0 !important;
+}
+.k-rtl .k-pager-last, [dir=rtl] .k-pager-last {
+    border-radius:  0.475rem 0 0  0.475rem  !important;
+}
+/*.k-grid-excel{
+    background-color:forestgreen !important;
+}*/
+
+/*#endregion */
+
+

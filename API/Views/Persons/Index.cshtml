@@ -1,0 +1,344 @@
+﻿@using Core.Entities
+@using Infrastructure.Dto
+@using API.Models;
+@model List<PersonDto>
+@{
+    ViewData["Title"] = "Index";
+    var people = Model;
+
+    Chart pieChart = (Chart)ViewData["PieChart"];
+
+    List<Country> countiesList = (List<Country>)ViewData["Countries"];
+    List<City> citiesList = (List<City>)ViewData["Cities"];
+
+}
+
+
+
+<div class="container-xxl pb-10">
+    <div class="card">
+
+        <!--begin::Content-->
+        <div id="kt_account_profile_details" class="collapse show" style="">
+            <!--begin::Form-->
+            <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" method="post" enctype="multipart/form-data">
+
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <h5 class="card-title">New Person</h5>
+
+
+
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label fw-bold fs-6">Picture</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9">
+                            <!--begin::Image input-->
+                            <div class="image-input image-input-outline" data-kt-image-input="true">
+                                <!--begin::Preview existing avatar-->
+                                <!--end::Preview existing avatar-->
+                                <!--begin::Label-->
+                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="" data-bs-original-title="Picture">
+                                    <i class="bi bi-pencil-fill fs-7"></i>
+                                    <!--begin::Inputs-->
+                                    <input type="file" id="upload" name="avatar" accept=".png, .jpg, .jpeg">
+                                    <input type="hidden" name="avatar_remove">
+                                    <!--end::Inputs-->
+                                </label>
+                                <!--end::Label-->
+
+                            </div>
+                            <!--end::Image input-->
+                            <!--begin::Hint-->
+                            <div class="form-text">Available : png , jpg , jpeg</div>
+                            <span class="fv-plugins-message-container invalid-feedback"></span>
+                            <!--end::Hint-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label required fw-bold fs-6">Full Name</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9">
+                            <!--begin::Row-->
+                            <div class="row">
+                                <!--begin::Col-->
+                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                    <input type="text" id="firstname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="FirstName">
+                                    <span class="fv-plugins-message-container invalid-feedback"></span>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                    <input type="text" id="lastname" class="form-control form-control-lg form-control-solid" placeholder="LastName">
+                                    <span class="fv-plugins-message-container invalid-feedback"></span>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label required fw-bold fs-6">Province</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row fv-plugins-icon-container">
+                            <!--begin::Select-->
+                            <select class="form-select border-0 flex-grow-1" data-control="select2" data-placeholder="Category" id="Country" data-hide-search="true">
+                                @foreach (var item in countiesList)
+                                {
+                                    <option value=@item.CountryId>@item.CountryName</option>
+                                }
+                            </select>
+                            <!--end::Select-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-3 col-form-label required fw-bold fs-6">City</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-9 fv-row fv-plugins-icon-container">
+                            <!--begin::Select-->
+                            <select class="form-select border-0 flex-grow-1" id="cityid" data-placeholder="City" data-hide-search="true">
+                            </select>
+                            <!--end::Select-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+
+                </div>
+                <!--end::Card body-->
+                <!--begin::Actions-->
+                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                    <button type="submit" class="btn btn-primary" id="InsertPerson">Add</button>
+                </div>
+                <!--end::Actions-->
+                <input type="hidden"><div></div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Content-->
+    </div>
+</div>
+
+
+<div class="container-xxl" id="kt_content_container">
+    <div class="card">
+        <!--begin::Card header-->
+        <div class="card-header border-0 pt-6">
+            <h5 class="card-title">Persons Table</h5>
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1" transform="rotate(45 17.0365 15.1223)" fill="black" />
+                            <path d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z" fill="black" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" id="searchfield" placeholder="Search user" />
+                    <button type="submit" class="btn btn-primary" id="Search">Search...</button>
+                </div>
+                <!--end::Search-->
+            </div>
+            <!--begin::Card title-->
+
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Table-->
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tblPersons">
+                <!--begin::Table head-->
+
+                <thead>
+                    <!--begin::Table row-->
+                    <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
+                        <th class="min-w-125px">Image</th>
+                        <th class="min-w-125px">FirstName</th>
+                        <th class="min-w-125px">LastName</th>
+                        <th class="min-w-125px">Country</th>
+                        <th class="min-w-125px">City</th>
+
+                    </tr>
+                    <!--end::Table row-->
+                </thead>
+                <!--end::Table head-->
+                <!--begin::Table body-->
+                <tbody class="text-gray-600 fw-bold">
+                    <!--begin::Table row-->
+                    @foreach (var item in people)
+                    {
+                        <tr>
+
+                            <!--begin::User=-->
+                            <td class="d-flex align-items-center">
+                                <!--begin:: Avatar -->
+                                <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                    <a href="#">
+                                        <div class="symbol-label">
+                                            <img src="@item.FileInfo[0].Name" alt="@item.LastName" class="w-100" />
+                                        </div>
+                                    </a>
+                                </div>
+                                <!--end::Avatar-->
+                            </td>
+                            <!--end::User=-->
+                            <!--begin::Role=-->
+                            <td>@item.FirstName</td>
+                            <!--end::Role=-->
+                            <!--begin::Last login=-->
+                            <td>@item.LastName</td>
+                            <!--end::Last login=-->
+                            <!--begin::Two step=-->
+                            <td>@item.Country.CountryName</td>
+                            <!--end::Two step=-->
+                            <!--begin::Joined-->
+                            <td>@item.City.CityName</td>
+                            <!--begin::Joined-->
+
+                        </tr>
+                    }
+
+                    <!--end::Table row-->
+
+                </tbody>
+                <!--end::Table body-->
+            </table>
+            <!--end::Table-->
+        </div>
+        <!--end::Card body-->
+    </div>
+</div>
+
+<div class="container-xxl pb-10 pt-10">
+    <div class="card">
+        <div class="card col-md-6">
+            <div class="card-body">
+                <h5 class="card-title">Pie Chart</h5>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        @Html.Raw(pieChart.CreateChartCode("pieChart"));
+    </script>
+    <script>
+        $("#InsertPerson").on("click", function () {
+            debugger;
+            var formData = new FormData();
+            formData.append("FirstName", $("#firstname").val());
+            formData.append("LastName", $("#lastname").val());
+            formData.append("CountryId", $("#Country").val());
+            formData.append("CityId", $("#cityid").val());
+            var file = $("#upload").get(0);
+            var files = file.files;
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Insert", "Persons")',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: formData,
+                success: function (Persons) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Persons/Index",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    });
+                }
+            });
+        });
+    </script>
+
+@*     <script>
+
+        $("#Search").on("click", function () {
+            debugger;
+            var formData = new FormData();
+            var a = document.getElementById('searchfield').value;
+            formData.append("searchfield", a);
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Search", "Persons")',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: formData,
+                success: function (Persons) {
+        @Model = Persons;
+                }
+            });
+        });
+
+    </script> *@
+    <script>
+        $("#Country").on('change', function (e) {
+
+            var getid = $('#Country').val();
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("getCity", "Persons")',
+                data: { id: getid },
+                success: function (result) {
+                    if (result.status == "success") {
+                        debugger
+                        var a = result.cityList;
+                        $('#cityid').empty();
+                        $.each(result.cityList, function (i) {
+                            $('#cityid').append($("<option></option>")
+                                .val(result.cityList[i].cityId).html(result.cityList[i].cityName));
+                        });
+                        // result.cityList = citiesList;
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $("#Search").on("click", function () {
+            debugger;
+            var formData = new FormData();
+            var a = document.getElementById('searchfield').value;
+            formData.append("searchfield", a);
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Search", "Persons")',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: formData,
+                success: function (Persons) {
+                    @people = Persons;
+                }
+            });
+        });
+    </script>
+
+}

@@ -37,11 +37,16 @@ public class PersonService : IPersonService
         return model;
     }
 
-    public async Task<List<PersonDto>> GetAll()
+    public  List<PersonDto> GetAll()
     {
-
-
-        var Persons = await dbContext.Persons.ToListAsync();
+        var Persons =  dbContext.Persons.ToList();
+        var countries = dbContext.Countries.ToList();
+        var cities = dbContext.Cities.ToList();
+        foreach (var Person in Persons)
+        {
+            Person.Country = countries.FirstOrDefault(a=>a.CountryId == Person.CountryId);
+            Person.City = cities.FirstOrDefault(a=>a.CityId == Person.CityId);
+        }
 
         var result = mapper.Map<List<PersonDto>>(Persons);
 

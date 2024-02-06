@@ -1,4 +1,5 @@
 using AutoMapper;
+using Core.Entities;
 using Infrastructure.Dto;
 
 namespace Application
@@ -9,8 +10,8 @@ namespace Application
         {
  
             CreateMap<Person, PersonDto>().ReverseMap();
-            CreateMap<Person, PersonDto>()
-            .ReverseMap();
+            CreateMap<Country, CountryDTO>().ReverseMap();
+            CreateMap<City, CityDTO>().ReverseMap();
         }
     }
 }

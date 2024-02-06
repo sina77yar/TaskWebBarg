@@ -20,6 +20,47 @@ namespace Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Core.Entities.City", b =>
+                {
+                    b.Property<int>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"), 1L, 1);
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("Core.Entities.Country", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CountryId"), 1L, 1);
+
+                    b.Property<string>("CountryName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("CountryId");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("Person", b =>
                 {
                     b.Property<int>("Id")
@@ -28,44 +69,62 @@ namespace Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("City")
-                        .HasColumnOrder(4);
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("Country")
-                        .HasColumnOrder(3);
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("FirstName")
-                        .HasColumnOrder(1);
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnName("ImageName")
-                        .HasColumnOrder(5);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnName("LastName")
-                        .HasColumnOrder(2);
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons", (string)null);
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("Core.Entities.City", b =>
+                {
+                    b.HasOne("Core.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Person", b =>
+                {
+                    b.HasOne("Core.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
                 });
 #pragma warning restore 612, 618
         }
